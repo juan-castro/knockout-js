@@ -1,0 +1,56 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	font-family: helvetica, arial, sans-serif;
+	font-size: 12px;
+	background: #ccc;
+}
+
+#wrapper {
+	min-height: 500px;
+	width: 800px;
+	padding: 30px;
+	background: white;
+	margin: 0 auto;
+}
+
+p {
+	margin: 0 0 10px 0;
+}
+
+h1, h2 {
+	margin-bottom: 10px;
+}
+
+hr {
+	margin: 20px 0;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 14px;
+	margin-bottom: 15px;
+}
+
+th {
+	background: #ccc;
+	color: white;
+	text-align: left;
+	font-weight: normal;
+}
+
+th, td {
+	padding: 8px 12px;
+}
+
+td {
+	border-bottom: 1px solid #ccc;
+}
+
+.supersaver {
+  color: red;
+}

@@ -1,0 +1,42 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="js/knockout.js"></script>
+    <script src="js/functions.js"></script>
+</head>
+<body>
+    <div id="wrapper">
+        <h1>Knockout JS</h1>
+        <p>First name: <strong data-bind="text: firstName">todo</strong></p>
+        <p>Last name: <strong data-bind="text: lastName">todo</strong></p>
+        <p>Full name: <strong data-bind="text: fullName">todo</strong></p>
+        <br />
+        <p>First Name: <input type="text" data-bind="value: firstName" /></p>
+        <p>Last Name: <input type="text" data-bind="value: lastName" /></p>
+        <button data-bind="click: capitalizeLastName">Go Caps</button>
+    </div>
+
+    <script type="text/javascript">
+        // This is a simple *viewmodel* - JavaScript that defines the data and behavior of your UI
+        function AppViewModel() {
+            this.firstName = ko.observable("Bert");
+            this.lastName = ko.observable("Bertington");
+
+            // Combine firstName and lastName
+            this.fullName = ko.computed(function() {
+                return this.firstName() + " " + this.lastName();
+            }, this);
+
+            // Capitalize lastName
+            this.capitalizeLastName = function() {
+                var currentVal = this.lastName();
+                this.lastName(currentVal.toUpperCase());
+            };
+        }
+
+        // Activates knockout.js
+        ko.applyBindings(new AppViewModel());
+    </script>
+</body>
+</html>

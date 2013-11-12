@@ -1,0 +1,109 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="js/knockout.js"></script>
+    <script src="js/functions.js"></script>
+</head>
+<body>
+    <div id="wrapper">
+        <h1>Hello, <strong data-bind='text: fullName'></strong></h1>
+        <!-- <p><span data-bind="text: firstNme">Bill</span>'s Shopping Cart</p> -->
+        <p><span data-bind='text: firstName'></span>'s Shopping Cart</p>
+        <button data-bind='click: checkout'>Checkout</button>
+
+        <hr />
+        <h2>Shopping Cart</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Tags</th>
+                    <th>Discount</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody data-bind='foreach: shoppingCart'>
+                <tr>
+                    <td data-bind='text: $index'></td>
+                    <td data-bind='text: name'></td>
+                    <td data-bind='text: price'></td>
+                    <td>
+                        <ul data-bind='foreach: tags'>
+                            <li>
+                                <span data-bind='text: $parent.name'></span> - <span data-bind='text: $data'></span>
+                            </li>
+                        </ul>
+                    </td>
+                    <td data-bind='if: discount() > 0' style='color: gray'>
+                        <span data-bind='text: formattedDiscount, css: { supersaver: discount() > .15 }'></span>
+                    </td>
+                    <td><button data-bind='click: $root.removeProduct'>Remove</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <button data-bind='click: addProduct'>Add Beer</button>
+    </div>
+
+    <script type="text/javascript">
+
+        // Product Class
+        function Product(name, price, tags, discount) {
+            this.name = ko.observable(name);
+            this.price = ko.observable(price);
+            tags = typeof(tags) !== 'undefined' ? tags : [];
+            this.tags = ko.observableArray(tags);
+            discount = typeof(discount) !== 'undefined' ? discount : 0;
+            this.discount = ko.observable(discount);
+            this.formattedDiscount = ko.computed(function() {
+                return (this.discount() * 100) + '%';
+            }, this);
+        }
+
+        // Use a native JavaScript object as our ViewModel
+        // This creates a person name John Smith
+        function personViewModel() {
+            var self = this;
+            this.firstName = ko.observable('John');
+            this.lastName = ko.observable('Smith');
+
+            // How to create a function
+            this.checkout = function() {
+                this.firstName('Ryan');
+                alert('Trying to checkout');
+            };
+
+            // Computed Observables
+            this.fullName = ko.computed(function() {
+                return this.firstName() + " " + this.lastName();
+            }, this);
+
+            //Observable Array
+            this.shoppingCart = ko.observableArray([
+                new Product("Beer", 10.99, null, .20),
+                new Product("Brats", 7.99, ['Test', 'Frito', 'Test 2'], .50),
+                new Product("Buns", 1.49, null, .15),
+                new Product("Chips", 1.89, ['Fried Goods', 'Frito Lay'])
+            ]);
+
+            // Add product function
+            this.addProduct = function() {
+                this.shoppingCart.push(new Product("More Beer", 10.99));
+            };
+
+            // Remove product function
+            this.removeProduct = function(product) {
+                self.shoppingCart.destroy(product);
+            };
+        };
+
+        // Tells knockout to use the object as the ViewModel for the page
+        ko.applyBindings(new personViewModel());
+
+    </script>
+
+
+</body>
+</html>
